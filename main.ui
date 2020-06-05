@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>740</width>
-    <height>568</height>
+    <width>732</width>
+    <height>611</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>70</height>
+        <height>80</height>
        </size>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -40,19 +40,19 @@
        <item>
         <layout class="QHBoxLayout" name="categoriesContainer">
          <property name="spacing">
-          <number>20</number>
+          <number>14</number>
          </property>
          <property name="leftMargin">
-          <number>10</number>
+          <number>7</number>
          </property>
          <property name="topMargin">
-          <number>10</number>
+          <number>7</number>
          </property>
          <property name="rightMargin">
-          <number>10</number>
+          <number>7</number>
          </property>
          <property name="bottomMargin">
-          <number>10</number>
+          <number>7</number>
          </property>
          <item>
           <layout class="QHBoxLayout" name="batInfo">
@@ -127,12 +127,42 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>740</width>
+     <width>732</width>
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuManage_Teams">
+    <property name="title">
+     <string>Manage Teams</string>
+    </property>
+    <addaction name="actionNewTeam"/>
+    <addaction name="actionOpenTeam"/>
+    <addaction name="actionSaveTeam"/>
+    <addaction name="actionEvaluateTeam"/>
+   </widget>
+   <addaction name="menuManage_Teams"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionNewTeam">
+   <property name="text">
+    <string>NEW Team</string>
+   </property>
+  </action>
+  <action name="actionOpenTeam">
+   <property name="text">
+    <string>OPEN Team</string>
+   </property>
+  </action>
+  <action name="actionSaveTeam">
+   <property name="text">
+    <string>SAVE Team</string>
+   </property>
+  </action>
+  <action name="actionEvaluateTeam">
+   <property name="text">
+    <string>EVALUATE Team</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
