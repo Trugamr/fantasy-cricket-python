@@ -388,15 +388,63 @@ class Ui_MainWindow(object):
 
 
     def remove_from_available_players(self, item):
-        self.availablePlayersList.takeItem(self.availablePlayersList.row(item))
-        self.chosenPlayersList.addItem(item.text())
+        try:
+            self.add_player_to_team(item.text())
+            self.availablePlayersList.takeItem(self.availablePlayersList.row(item))
+            self.chosenPlayersList.addItem(item.text())
+        except ValueError as error:
+            print(f'ERROR: {error}')
+
 
     def remove_from_chosen_players(self, item):
         self.chosenPlayersList.takeItem(self.chosenPlayersList.row(item))
         self.availablePlayersList.addItem(item.text())
+        self.remove_player_from_team(item.text())
 
         # update list according to category seletect in radio button
         self.radio_button_handler()
+
+    def add_player_to_team(self, name):        
+        player = self.total_players[name]
+
+        try:
+            self.validate_logic(points_available = self.points_available - player['value'])            
+            if player['ctg'] == 'BAT':
+                self.validate_logic(batsmen = self.batsmen + 1)
+                self.batsmen += 1
+            elif player['ctg'] == 'BWL':
+                self.validate_logic(bowlers = self.bowlers + 1)
+                self.bowlers += 1
+            elif player['ctg'] == 'AR':
+                self.validate_logic(all_rounders = self.all_rounders + 1)
+                self.all_rounders +=1
+            elif player['ctg'] == 'WK':
+                print(self.validate_logic(wicket_keeper = self.wicket_keeper + 1))
+                self.wicket_keeper += 1
+
+            self.points_available -= player['value']
+            self.points_used += player['value']
+        except ValueError as error:
+            raise error
+
+        
+        self.update_ui()
+
+    def remove_player_from_team(self, name):
+        player = self.total_players[name]
+
+        if player['ctg'] == 'BAT':
+            self.batsmen -= 1
+        elif player['ctg'] == 'BWL':
+            self.bowlers -= 1
+        elif player['ctg'] == 'AR':
+            self.all_rounders -=1
+        elif player['ctg'] == 'WK':
+            self.wicket_keeper -= 1
+
+        self.points_available += player['value']
+        self.points_used -= player['value']
+        self.update_ui()
 
     def create_new_team(self):
         value, confirmed = QtWidgets.QInputDialog.getText(MainWindow, 'Fantasy Cricket', 'Enter Team Name')
@@ -428,7 +476,35 @@ class Ui_MainWindow(object):
             print('ERROR: couldn\'t fetching team names')
         
         return (True, 'Team Name is valid')
+    
+
+    def validate_logic( self, points_available = None, batsmen = None, bowlers = None, all_rounders = None, wicket_keeper = None):
+        # not directly using current variables so that function
+        # can also be used to check other states
+        if not points_available: points_available = self.points_available
+        if not batsmen: batsmen = self.batsmen
+        if not bowlers: bowlers = self.bowlers
+        if not all_rounders: all_rounders = self.all_rounders
+        if not wicket_keeper: wicket_keeper = self.wicket_keeper
+
+        if points_available < 0:
+            raise ValueError('You don\'t have enough points available')
         
+        if wicket_keeper > 1:
+            raise ValueError('You can only have one Wicket Keeper in team')
+        
+        if batsmen > 5:
+            raise ValueError('You cat\'t have more than 5 Batsmen in team')
+
+        if bowlers > 5:
+            raise ValueError('You can\'t have more than 5 Bowlers in team')
+
+        if all_rounders > 3:
+            raise ValueError('You can\'t have more than 3 all rounders in team')
+
+        return True
+
+
 
 
 
