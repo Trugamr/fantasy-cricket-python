@@ -308,7 +308,7 @@
            </layout>
           </item>
           <item>
-           <widget class="QListView" name="availablePlayersList"/>
+           <widget class="QListWidget" name="availablePlayersList"/>
           </item>
          </layout>
         </widget>
@@ -457,7 +457,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QListView" name="chosenPlayersList"/>
+             <widget class="QListWidget" name="chosenPlayersList"/>
             </item>
            </layout>
           </item>
