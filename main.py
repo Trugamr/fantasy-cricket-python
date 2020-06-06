@@ -352,6 +352,10 @@ class Ui_MainWindow(object):
 
         self.total_players = total_players.copy()
 
+        # clearing both lists
+        self.availablePlayersList.clear()
+        self.chosenPlayersList.clear()
+
     def update_ui(self):
         # update ui according to current variables
         self.batTextEdit.setText(str(self.batsmen))
