@@ -261,22 +261,23 @@ class Ui_MainWindow(object):
         self.menuManage_Teams.addAction(self.actionOpenTeam)
         self.menuManage_Teams.addAction(self.actionSaveTeam)
         self.menuManage_Teams.addAction(self.actionEvaluateTeam)
-        self.menuManage_Teams.triggered[QtWidgets.QAction].connect(
-            self.menu_handler)
         self.menubar.addAction(self.menuManage_Teams.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+        # connect handle functions
+        self.menuManage_Teams.triggered[QtWidgets.QAction].connect(self.menu_handler)
+        for rb in [self.batRadio, self.bowRadio, self.arRadio, self.wkRadio]:
+            rb.toggled.connect(self.radio_button_handler)
 
         # set default variables and update them in up
         self.set_default_variables()
         self.update_ui()
 
         # list double clicked actions
-        self.availablePlayersList.itemDoubleClicked.connect(
-            self.remove_from_available_players)
-        self.chosenPlayersList.itemDoubleClicked.connect(
-            self.remove_from_chosen_players)
+        self.availablePlayersList.itemDoubleClicked.connect(self.remove_from_available_players)
+        self.chosenPlayersList.itemDoubleClicked.connect(self.remove_from_chosen_players)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -307,13 +308,18 @@ class Ui_MainWindow(object):
     def menu_handler(self, action):
         action_performed = action.text()
         if action_performed == 'NEW Team':
-            print('new')
+            self.create_new_team()
         elif action_performed == 'OPEN Team':
             print('open')
         elif action_performed == 'SAVE Team':
             print('save')
         elif action_performed == 'EVALUATE Team':
             print('evaluate')
+
+    def radio_button_handler(self):
+        for rb in [self.batRadio, self.bowRadio, self.arRadio, self.wkRadio]:
+            if(rb.isChecked()):
+                self.populate_available_players_list(rb.text())
 
     def set_default_variables(self):
         self.batsmen = 0
@@ -324,7 +330,21 @@ class Ui_MainWindow(object):
         self.points_used = 0
         self.team_name = 'TEAM_NAME'
         self.radio_buttons_enabled = False
-        self.available_players = {}
+
+        total_players = {}
+        cricket_db_cursor.execute('SELECT player, value, ctg FROM stats;')
+        for record in cricket_db_cursor.fetchall():
+            total_players.update(
+                {
+                    record[0]: {
+                        "name": record[0],
+                        "value": record[1],
+                        "ctg": record[2]
+                    }
+                }
+            )
+
+        self.total_players = total_players.copy()
 
     def update_ui(self):
         # update ui according to current variables
@@ -336,17 +356,36 @@ class Ui_MainWindow(object):
         self.ptsUsedTextEdit.setText(str(self.points_used))
         self.teamNameLabel.setText(self.team_name)
 
-        radio_buttons = [self.batRadio,
-                         self.bowRadio, self.arRadio, self.wkRadio]
+        radio_buttons = [self.batRadio, self.bowRadio, self.arRadio, self.wkRadio]
         if(self.radio_buttons_enabled):
             for rb in radio_buttons:
                 rb.setEnabled(True)
         else:
             for rb in radio_buttons:
                 rb.setEnabled(False)
+                rb.setChecked(False)
 
-    def populate_available_players_list(self, category):
-        pass
+    def populate_available_players_list(self, category = 'ALL'):
+        self.availablePlayersList.clear()
+
+        chosen_players = []
+        for index in range(self.chosenPlayersList.count()):
+            chosen_players.append(self.chosenPlayersList.item(index).text())
+
+        for player in self.total_players.values():
+            # if player already in chosen list dont add it to available players
+            if player['name'] in chosen_players:
+                continue
+
+            # category in radio button is BOW but in db its BWL
+            if(category == 'BOW'):
+                category = 'BWL'
+
+            if category == 'ALL':
+                self.availablePlayersList.addItem(player['name'])
+            elif category == player['ctg']:
+                self.availablePlayersList.addItem(player['name'])
+
 
     def remove_from_available_players(self, item):
         self.availablePlayersList.takeItem(self.availablePlayersList.row(item))
@@ -356,10 +395,51 @@ class Ui_MainWindow(object):
         self.chosenPlayersList.takeItem(self.chosenPlayersList.row(item))
         self.availablePlayersList.addItem(item.text())
 
+        # update list according to category seletect in radio button
+        self.radio_button_handler()
+
+    def create_new_team(self):
+        value, confirmed = QtWidgets.QInputDialog.getText(MainWindow, 'Fantasy Cricket', 'Enter Team Name')
+        if confirmed:
+            valid, message = self.is_valid_team_name(value)
+            if not valid:
+                print(f'ERROR: {message}')
+                return self.create_new_team()
+            
+            self.set_default_variables()
+            self.team_name = value
+            self.populate_available_players_list()
+            self.radio_buttons_enabled = True
+            self.update_ui()
+        
+            
+    def is_valid_team_name(self, name):
+        if(len(name) < 4):
+            return (False, 'Team Name should contain atleast 4 characters')
+        try:
+            teams = []
+            cricket_db_cursor.execute('SELECT name FROM teams')
+            for record in cricket_db_cursor.fetchall():
+                teams.append(record[0])
+            
+            if name in teams:
+                return (False, 'Team with this name already exists')
+        except:
+            print('ERROR: couldn\'t fetching team names')
+        
+        return (True, 'Team Name is valid')
+        
+
+
 
 if __name__ == "__main__":
     import sys
     import sqlite3
+    # db connection
+    cricket_db = sqlite3.connect('fantasy-cricket.db')
+    cricket_db_cursor = cricket_db.cursor()
+
+    # ui initialization
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
