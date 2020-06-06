@@ -310,7 +310,11 @@ class Ui_MainWindow(object):
         if action_performed == 'NEW Team':
             self.create_new_team()
         elif action_performed == 'OPEN Team':
-            print('open')
+            try:
+                self.open_team()
+                print('MESSAGE: team opened successfully')
+            except Exception as error:
+                print(f'ERROR: {error}')
         elif action_performed == 'SAVE Team':
             try:
                 self.save_team()
@@ -548,7 +552,54 @@ class Ui_MainWindow(object):
             raise error
 
         return True
+
+    def open_team(self):        
+        # getting teams
+        teams = {}
+        try:
+            cricket_db_cursor.execute('SELECT name, players, value FROM teams')
+            for record in cricket_db_cursor.fetchall():
+                teams.update({
+                    record[0]: {
+                        "name": record[0],
+                        "players": record[1].split(':'),
+                        "value": record[2]
+                    }
+                })
+        except Exception as error:
+            raise error
+
+        opened_team, confirmed = QtWidgets.QInputDialog.getItem(MainWindow, "Fantasy Cricket", "Choose a team", teams.keys(), 0, False)
+
+        if not confirmed:
+            raise ValueError('No team selected')
         
+        # loading defaults and updating ui
+        self.set_default_variables()
+        self.update_ui()
+
+        # updating variable values to the opened team
+        self.team_name = opened_team
+        self.points_available -= teams[opened_team]['value']
+        self.points_used = teams[opened_team]['value']
+
+        for player_name in teams[self.team_name]['players']:
+            if self.total_players[player_name]['ctg'] == 'BAT':
+                self.batsmen += 1
+            elif self.total_players[player_name]['ctg'] == 'BWL':
+                self.bowlers += 1
+            elif self.total_players[player_name]['ctg'] == 'AR':
+                self.all_rounders +=1
+            elif self.total_players[player_name]['ctg'] == 'WK':
+                self.wicket_keeper += 1
+            
+            self.chosenPlayersList.addItem(player_name)
+        
+        
+        # refreshing ui
+        self.populate_available_players_list()
+        self.radio_buttons_enabled = True
+        self.update_ui()
 
 
 
