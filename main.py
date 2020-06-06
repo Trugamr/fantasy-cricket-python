@@ -324,7 +324,10 @@ class Ui_MainWindow(object):
             except Exception as error:
                 print(f'ERROR: {error}')
         elif action_performed == 'EVALUATE Team':
-            print('evaluate')
+            try:
+                self.evaluate_team()
+            except Exception as error:
+                print(f'ERROR: {error}')
 
     def radio_button_handler(self):
         for rb in [self.batRadio, self.bowRadio, self.arRadio, self.wkRadio]:
@@ -338,7 +341,7 @@ class Ui_MainWindow(object):
         self.wicket_keeper = 0
         self.points_available = 1000
         self.points_used = 0
-        self.team_name = 'TEAM_NAME'
+        self.team_name = 'NO_TEAM_SELECTED'
         self.radio_buttons_enabled = False
 
         total_players = {}
@@ -502,17 +505,13 @@ class Ui_MainWindow(object):
         if not wicket_keeper: wicket_keeper = self.wicket_keeper
 
         if points_available < 0:
-            raise ValueError('You don\'t have enough points available')
-        
+            raise ValueError('You don\'t have enough points available')        
         if wicket_keeper > 1:
-            raise ValueError('You can only have one Wicket Keeper in team')
-        
+            raise ValueError('You can only have one Wicket Keeper in team')        
         if batsmen > 5:
             raise ValueError('You cat\'t have more than 5 Batsmen in team')
-
         if bowlers > 5:
             raise ValueError('You can\'t have more than 5 Bowlers in team')
-
         if all_rounders > 3:
             raise ValueError('You can\'t have more than 3 all rounders in team')
 
@@ -569,7 +568,10 @@ class Ui_MainWindow(object):
         except Exception as error:
             raise error
 
-        opened_team, confirmed = QtWidgets.QInputDialog.getItem(MainWindow, "Fantasy Cricket", "Choose a team", teams.keys(), 0, False)
+        if len(teams):
+            opened_team, confirmed = QtWidgets.QInputDialog.getItem(MainWindow, "Fantasy Cricket", "Choose a team", teams.keys(), 0, False)
+        else:
+            raise ValueError('No saved teams found')
 
         if not confirmed:
             raise ValueError('No team selected')
@@ -600,6 +602,9 @@ class Ui_MainWindow(object):
         self.populate_available_players_list()
         self.radio_buttons_enabled = True
         self.update_ui()
+
+    def evaluate_team(self):
+        print('evaluate_team')
 
 
 
