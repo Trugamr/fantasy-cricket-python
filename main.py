@@ -312,7 +312,13 @@ class Ui_MainWindow(object):
         elif action_performed == 'OPEN Team':
             print('open')
         elif action_performed == 'SAVE Team':
-            print('save')
+            try:
+                self.save_team()
+                print('MESSAGE: team saved sucessfully')
+            except ValueError as error:
+                print(f'ERROR: {error}')
+            except Exception as error:
+                print(f'ERROR: {error}')
         elif action_performed == 'EVALUATE Team':
             print('evaluate')
 
@@ -419,7 +425,7 @@ class Ui_MainWindow(object):
                 self.validate_logic(all_rounders = self.all_rounders + 1)
                 self.all_rounders +=1
             elif player['ctg'] == 'WK':
-                print(self.validate_logic(wicket_keeper = self.wicket_keeper + 1))
+                self.validate_logic(wicket_keeper = self.wicket_keeper + 1)
                 self.wicket_keeper += 1
 
             self.points_available -= player['value']
@@ -504,7 +510,41 @@ class Ui_MainWindow(object):
 
         return True
 
+    def save_team(self):
+        team_players = self.batsmen + self.bowlers + self.all_rounders + self.wicket_keeper
+        
+        try:
+            self.validate_logic()
+        except ValueError as error:
+            raise error
 
+        if team_players > 11:
+            raise ValueError('You can only have 11 players in team')
+        if team_players < 11:
+            raise ValueError('You must have atleast 11 players in team')
+
+        team_name = self.team_name
+        team_players_string = ''
+        team_value = 0
+
+        for i in range(self.chosenPlayersList.count()):
+            player_name = self.chosenPlayersList.item(i).text()
+            team_players_string += player_name if i == 0 else f':{player_name}'
+            team_value += self.total_players[player_name]['value']
+
+        try:
+            sql = f"""INSERT INTO teams (name, players, value) 
+                VALUES ("{team_name}", "{team_players_string}", {team_value})
+                ON CONFLICT(name) 
+                DO UPDATE SET players = "{team_players_string}", value = {team_value} WHERE name = "{team_name}";"""
+            cricket_db_cursor.execute(sql)
+            cricket_db.commit()
+        except Exception as error:
+            cricket_db.rollback()
+            raise error
+
+        return True
+        
 
 
 
