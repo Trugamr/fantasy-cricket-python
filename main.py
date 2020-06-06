@@ -281,7 +281,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Fantasy Cricket"))
         self.label.setText(_translate("MainWindow", "Your Selections"))
         self.batLabel.setText(_translate("MainWindow", "Batsmen (BAT)"))
         self.bowLabel.setText(_translate("MainWindow", "Bowlers (BOW)"))
