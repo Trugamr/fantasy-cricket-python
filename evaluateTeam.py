@@ -119,6 +119,9 @@ class Ui_EvaluateTeamDialog(object):
         # manually calling once to populate data of first team
         self.team_combo_handler(0)
 
+        # adding calculate button handler
+        self.calcaulateScoreButton.clicked.connect(self.calculate_points)
+
     def retranslateUi(self, EvaluateTeamDialog):
         _translate = QtCore.QCoreApplication.translate
         EvaluateTeamDialog.setWindowTitle(_translate("EvaluateTeamDialog", "Evaluate Team"))
@@ -138,6 +141,10 @@ class Ui_EvaluateTeamDialog(object):
         self.playersList.clear()
         for player in team['players']:
             self.playersList.addItem(player)
+
+        # reset points list and counter
+        self.pointsList.clear()
+        self.totalPointsLabel.setText('Total Points: 0')
     
 
     def fetch_matches(self):
@@ -196,8 +203,62 @@ class Ui_EvaluateTeamDialog(object):
         
         return teams
 
-    def calculate_score(self):
-        pass
+    def calculate_points(self):
+        # clear points list
+        self.pointsList.clear()
+
+        # selected team and match
+        team = self.teams[self.teamComboBox.currentText()]
+        match = self.matches[self.matchComboBox.currentText()]
+        score_by_player = {}
+        total_score = 0
+
+        for player in team['players']:
+            score = self.calculate_points_for_player(match[player]) 
+            score_by_player.update(score)
+            total_score += score[player]
+
+            # adding player score to list
+            self.pointsList.addItem(str(score[player]))
+        
+        # update total points
+        self.totalPointsLabel.setText(f'Total Points: {total_score}')
+
+    def calculate_points_for_player(self, data):
+        player_points = 0
+        # batting
+        player_points += data['scored']//2 # 1 pt for for 2 runs
+        player_points += 5 if data['scored'] >= 50 else 0 # 5 points for half century
+        player_points += 10 if data['scored'] >= 100 else 0 # 10 points for  century
+        strike_rate = 0
+        try:
+            strike_rate = round((data['scored']/data['faced'] * 100))
+        except Exception as error:
+            print(f'ERROR: {error}')
+        player_points += 2 if strike_rate >= 80 else 0 # 2 points for strike rate 80-100
+        player_points += 4 if strike_rate > 100 else 0 # 4 addition points for stirke rate > 100
+        player_points += data['fours'] # 1 points for 4
+        player_points += 2 * data['sixes'] # 2 points for 6
+
+        # bowling
+        player_points += 10 * data['wkts'] # 10 for each wicket
+        player_points += 5 if data['wkts'] >= 3 else 0 # additional 5 points for 3 wickets
+        player_points += 10 if data['wkts'] >= 5 else 0 # addition 10 points for 3 wickets
+        economy_rate = None
+        try:
+            economy_rate = data['given']/(data['bowled']/6) # runs given per over
+        except Exception as error:
+            print(f'ERROR: {error}')
+
+        if(economy_rate):
+            player_points += 4 if economy_rate >= 3.5 and economy_rate < 4.5 else 0 # 10 points if economy rate less than 2
+            player_points += 7 if economy_rate >= 2 and economy_rate < 3.5 else 0 # 10 points if economy rate b/w 2 and 3.5
+            player_points += 10 if economy_rate < 2 else 0 # 10 points if economy rate less than 2
+
+        # fielding
+        player_points += 10 *  (data['catches'] + data['stumping'] + data['ro']) # 10 points each for catch, stumping or run out
+
+        return {data['player']: player_points}
 
     def populate_ui(self):
         # adding teams to comboBox

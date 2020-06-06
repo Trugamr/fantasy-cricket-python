@@ -318,16 +318,20 @@ class Ui_MainWindow(object):
         elif action_performed == 'SAVE Team':
             try:
                 self.save_team()
-                print('MESSAGE: team saved sucessfully')
+                print('MESSAGE: team saved successfully')
+                self.show_message(heading = 'Success', desc = 'Team Saved Successfully')
             except ValueError as error:
                 print(f'ERROR: {error}')
+                self.show_message(heading = 'Error', desc = str(error), icon='critical')
             except Exception as error:
                 print(f'ERROR: {error}')
+                self.show_message(heading = 'Error', desc = str(error), icon='critical')
         elif action_performed == 'EVALUATE Team':
             try:
                 self.evaluate_team()
             except Exception as error:
                 print(f'ERROR: {error}')
+                self.show_message(heading = 'Error', desc = str(error), icon='critical')
 
     def radio_button_handler(self):
         for rb in [self.batRadio, self.bowRadio, self.arRadio, self.wkRadio]:
@@ -411,6 +415,7 @@ class Ui_MainWindow(object):
             self.chosenPlayersList.addItem(item.text())
         except ValueError as error:
             print(f'ERROR: {error}')
+            self.show_message(heading = 'Error', desc = str(error), icon='critical')
 
 
     def remove_from_chosen_players(self, item):
@@ -469,6 +474,7 @@ class Ui_MainWindow(object):
             valid, message = self.is_valid_team_name(value)
             if not valid:
                 print(f'ERROR: {message}')
+                self.show_message(heading = 'Error', desc = str(message), icon='critical')
                 return self.create_new_team()
             
             self.set_default_variables()
@@ -490,7 +496,7 @@ class Ui_MainWindow(object):
             if name in teams:
                 return (False, 'Team with this name already exists')
         except:
-            print('ERROR: couldn\'t fetching team names')
+            print('ERROR: couldn\'t fetch team names')
         
         return (True, 'Team Name is valid')
     
@@ -618,8 +624,17 @@ class Ui_MainWindow(object):
             result = Dialog.exec()
         else:
             raise ValueError('No saved teams found')
-        print('evaluate_team')
 
+    def show_message(self, heading = 'Error', desc = 'Unknown Error Occured', icon = None):
+        QMessageBox = QtWidgets.QMessageBox
+        if not icon: icon = QMessageBox.Information
+        if icon == 'critical': icon = QMessageBox.Critical
+        msg = QMessageBox()
+        msg.setIcon(icon)
+        msg.setText(heading)
+        msg.setInformativeText(desc + '\t\t\t')
+        msg.setWindowTitle('Fantasy Cricket')
+        msg.exec_()       
 
 
 if __name__ == "__main__":
