@@ -604,6 +604,20 @@ class Ui_MainWindow(object):
         self.update_ui()
 
     def evaluate_team(self):
+        # check if atleast one team is present in database
+        try:
+            cricket_db_cursor.execute('SELECT name, players, value FROM teams')
+        except Exception as error:
+            raise error
+
+        if len(cricket_db_cursor.fetchall()):
+            # open evaluate dialog
+            Dialog = QtWidgets.QDialog()
+            ui = Ui_EvaluateTeamDialog()
+            ui.setupUi(Dialog)
+            result = Dialog.exec()
+        else:
+            raise ValueError('No saved teams found')
         print('evaluate_team')
 
 
@@ -611,6 +625,8 @@ class Ui_MainWindow(object):
 if __name__ == "__main__":
     import sys
     import sqlite3
+    from evaluateTeam import Ui_EvaluateTeamDialog
+
     # db connection
     cricket_db = sqlite3.connect('fantasy-cricket.db')
     cricket_db_cursor = cricket_db.cursor()

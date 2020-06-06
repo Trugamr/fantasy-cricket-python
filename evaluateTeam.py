@@ -10,13 +10,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_evaluageTeamDialog(object):
-    def setupUi(self, evaluageTeamDialog):
-        evaluageTeamDialog.setObjectName("evaluageTeamDialog")
-        evaluageTeamDialog.resize(524, 485)
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(evaluageTeamDialog)
+class Ui_EvaluateTeamDialog(object):
+    def setupUi(self, EvaluateTeamDialog):
+        EvaluateTeamDialog.setObjectName("EvaluateTeamDialog")
+        EvaluateTeamDialog.resize(524, 485)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(EvaluateTeamDialog)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.topContainer = QtWidgets.QWidget(evaluageTeamDialog)
+        self.topContainer = QtWidgets.QWidget(EvaluateTeamDialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -64,10 +64,10 @@ class Ui_evaluageTeamDialog(object):
         self.listsContainer.setObjectName("listsContainer")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.playersLabel = QtWidgets.QLabel(evaluageTeamDialog)
+        self.playersLabel = QtWidgets.QLabel(EvaluateTeamDialog)
         self.playersLabel.setObjectName("playersLabel")
         self.verticalLayout_3.addWidget(self.playersLabel)
-        self.playersList = QtWidgets.QListWidget(evaluageTeamDialog)
+        self.playersList = QtWidgets.QListWidget(EvaluateTeamDialog)
         self.playersList.setObjectName("playersList")
         self.verticalLayout_3.addWidget(self.playersList)
         self.listsContainer.addLayout(self.verticalLayout_3)
@@ -75,15 +75,15 @@ class Ui_evaluageTeamDialog(object):
         self.listsContainer.addItem(spacerItem1)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.pointsByPlayerLabel = QtWidgets.QLabel(evaluageTeamDialog)
+        self.pointsByPlayerLabel = QtWidgets.QLabel(EvaluateTeamDialog)
         self.pointsByPlayerLabel.setObjectName("pointsByPlayerLabel")
         self.verticalLayout_4.addWidget(self.pointsByPlayerLabel)
-        self.pointsList = QtWidgets.QListWidget(evaluageTeamDialog)
+        self.pointsList = QtWidgets.QListWidget(EvaluateTeamDialog)
         self.pointsList.setObjectName("pointsList")
         self.verticalLayout_4.addWidget(self.pointsList)
         self.listsContainer.addLayout(self.verticalLayout_4)
         self.verticalLayout_2.addLayout(self.listsContainer)
-        self.comboBoxesContainer = QtWidgets.QWidget(evaluageTeamDialog)
+        self.comboBoxesContainer = QtWidgets.QWidget(EvaluateTeamDialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -105,26 +105,140 @@ class Ui_evaluageTeamDialog(object):
         self.horizontalLayout_3.addWidget(self.totalPointsLabel)
         self.verticalLayout_2.addWidget(self.comboBoxesContainer)
 
-        self.retranslateUi(evaluageTeamDialog)
-        QtCore.QMetaObject.connectSlotsByName(evaluageTeamDialog)
+        self.retranslateUi(EvaluateTeamDialog)
+        QtCore.QMetaObject.connectSlotsByName(EvaluateTeamDialog)
 
-    def retranslateUi(self, evaluageTeamDialog):
+        # connecting to db
+        self.connect_to_db()
+
+        # poulating ui and fetching teams, players and matches at start
+        self.populate_ui()
+
+        # adding combo box handlers
+        self.teamComboBox.activated.connect(self.team_combo_handler)
+        # manually calling once to populate data of first team
+        self.team_combo_handler(0)
+
+    def retranslateUi(self, EvaluateTeamDialog):
         _translate = QtCore.QCoreApplication.translate
-        evaluageTeamDialog.setWindowTitle(_translate("evaluageTeamDialog", "Evaluate Team"))
-        self.label.setText(_translate("evaluageTeamDialog", "Evaluate You Fantasy Cricket Team"))
-        self.teamLabel.setText(_translate("evaluageTeamDialog", "Team: "))
-        self.matchLabel.setText(_translate("evaluageTeamDialog", "Match: "))
-        self.playersLabel.setText(_translate("evaluageTeamDialog", "Players"))
-        self.pointsByPlayerLabel.setText(_translate("evaluageTeamDialog", "Points by Player"))
-        self.calcaulateScoreButton.setText(_translate("evaluageTeamDialog", "Calculate Score"))
-        self.totalPointsLabel.setText(_translate("evaluageTeamDialog", "Total Points: 0"))
+        EvaluateTeamDialog.setWindowTitle(_translate("EvaluateTeamDialog", "Evaluate Team"))
+        self.label.setText(_translate("EvaluateTeamDialog", "Evaluate Your Fantasy Cricket Team"))
+        self.teamLabel.setText(_translate("EvaluateTeamDialog", "Team: "))
+        self.matchLabel.setText(_translate("EvaluateTeamDialog", "Match: "))
+        self.playersLabel.setText(_translate("EvaluateTeamDialog", "Players"))
+        self.pointsByPlayerLabel.setText(_translate("EvaluateTeamDialog", "Points by Player"))
+        self.calcaulateScoreButton.setText(_translate("EvaluateTeamDialog", "Calculate Score"))
+        self.totalPointsLabel.setText(_translate("EvaluateTeamDialog", "Total Points: 0"))
+    
+    def team_combo_handler(self, index):
+        team_name = self.teamComboBox.itemText(index)
+        team = self.teams[team_name]
 
+        # populating players list widget
+        self.playersList.clear()
+        for player in team['players']:
+            self.playersList.addItem(player)
+    
+
+    def fetch_matches(self):
+        matches = { "match" : {} }
+        self.cricket_db_cursor.execute('SELECT player, scored, faced, fours, sixes, bowled, maiden, given, wkts, catches, stumping, ro FROM match')
+        for record in self.cricket_db_cursor.fetchall():
+            matches['match'].update({ record[0]: {
+                    "player": record[0],
+                    "scored": record[1],
+                    "faced": record[2],
+                    "fours": record[3],
+                    "sixes": record[4],
+                    "bowled": record[5],
+                    "maiden": record[6],
+                    "given": record[7],
+                    "wkts": record[8],
+                    "catches": record[9],
+                    "stumping": record[10],
+                    "ro": record[11]
+                }
+            })
+        
+        return matches
+
+    def fetch_players(self):
+        players = {}
+        try:
+            self.cricket_db_cursor.execute('SELECT player, value, ctg FROM stats')
+            for record in self.cricket_db_cursor.fetchall():
+                players.update({ record[0]: {
+                        "name": record[0],
+                        "value": record[1],
+                        "ctg": record[2]
+                    }
+                })
+        except Exception as error:
+            raise error
+
+        return players
+
+    def fetch_teams(self):
+        teams = {}
+        try:
+            self.cricket_db_cursor.execute('SELECT name, players, value FROM teams')
+        except Exception as error:
+            raise error
+        
+        for record in self.cricket_db_cursor.fetchall():
+            teams.update({
+                record[0]: {
+                    "name": record[0],
+                    "players": record[1].split(':'),
+                    "value": record[2]
+                }
+            }) 
+        
+        return teams
+
+    def calculate_score(self):
+        pass
+
+    def populate_ui(self):
+        # adding teams to comboBox
+        try:
+            self.teams = self.fetch_teams()
+            for team in self.teams.keys():
+                self.teamComboBox.addItem(team)
+        except Exception as error:
+            print(f'ERROR: {error}')
+        
+        # adding match to comboBox
+        try:
+            self.matches = self.fetch_matches()
+            for match in self.matches.keys():
+                self.matchComboBox.addItem(match)
+        except Exception as error:
+            raise error
+
+        # fetching all players
+        try:
+            self.total_players = self.fetch_players()
+        except Exception as error:
+            raise error
+        
+    
+    def connect_to_db(self):
+        import sqlite3
+
+        self.cricket_db = sqlite3.connect('fantasy-cricket.db')
+        self.cricket_db_cursor = self.cricket_db.cursor()
+    
+    def disconnect_db(self):
+        self.cricket_db.close()
 
 if __name__ == "__main__":
     import sys
+
+    # ui initialization
     app = QtWidgets.QApplication(sys.argv)
-    evaluageTeamDialog = QtWidgets.QDialog()
-    ui = Ui_evaluageTeamDialog()
-    ui.setupUi(evaluageTeamDialog)
-    evaluageTeamDialog.show()
+    EvaluateTeamDialog = QtWidgets.QDialog()
+    ui = Ui_EvaluateTeamDialog()
+    ui.setupUi(EvaluateTeamDialog)
+    EvaluateTeamDialog.show()
     sys.exit(app.exec_())

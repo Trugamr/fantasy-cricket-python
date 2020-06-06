@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>evaluageTeamDialog</class>
- <widget class="QDialog" name="evaluageTeamDialog">
+ <class>EvaluateTeamDialog</class>
+ <widget class="QDialog" name="EvaluateTeamDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -35,7 +35,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Evaluate You Fantasy Cricket Team</string>
+         <string>Evaluate Your Fantasy Cricket Team</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
