@@ -13,32 +13,77 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(754, 692)
+        MainWindow.resize(644, 610)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setStyleSheet(
-            "background-color: rgb(235, 235, 235);")
+        self.centralwidget.setStyleSheet("QLabel {\n"
+"    font: 9pt;\n"
+"    color: #3e3e3e;\n"
+"}\n"
+"\n"
+"#yourSelectionsLabel {\n"
+"    font: bold 10pt;\n"
+"}\n"
+"\n"
+"QWidget#centralwidget {\n"
+"      background-color: #EDFCEE;\n"
+"}\n"
+"\n"
+"#topContainer, #footerLabel {\n"
+"    background-color: #85EA8C;\n"
+"}\n"
+"\n"
+"#ptsAvailableInfo, #ptsUsedInfo {\n"
+"    background-color: #A8F0AD;\n"
+"}\n"
+"\n"
+"#ctgGroup, #teamNameInfo {\n"
+"    background-color: #CBF6CE;\n"
+"    font: bold 9pt;\n"
+"    color: #3e3e3e;\n"
+"}\n"
+"\n"
+"#ctgGroupContainer {\n"
+"    background-color: #CBF6CE;\n"
+"}\n"
+"\n"
+"#footerLabel {\n"
+"    padding: 8px;\n"
+"}\n"
+"\n"
+"QLineEdit {\n"
+"    background-color: #ffffff;\n"
+"    font: 10pt;\n"
+"    color: black;\n"
+"}\n"
+"\n"
+"#teamNameTitle {\n"
+"    font: bold;\n"
+"}\n"
+"\n"
+"QRadioButton {\n"
+"    font: bold 10pt;\n"
+"    color: #2e2e2e;\n"
+"}")
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.centralwidget)
-        self.verticalLayout_2.setContentsMargins(20, -1, 20, -1)
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.topContainer = QtWidgets.QWidget(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.topContainer.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.topContainer.sizePolicy().hasHeightForWidth())
         self.topContainer.setSizePolicy(sizePolicy)
         self.topContainer.setMaximumSize(QtCore.QSize(16777215, 80))
         self.topContainer.setAutoFillBackground(False)
-        self.topContainer.setStyleSheet(
-            "background-color: rgb(255, 255, 255);")
+        self.topContainer.setStyleSheet("")
         self.topContainer.setObjectName("topContainer")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.topContainer)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(self.topContainer)
-        self.label.setObjectName("label")
-        self.verticalLayout.addWidget(self.label)
+        self.yourSelectionsLabel = QtWidgets.QLabel(self.topContainer)
+        self.yourSelectionsLabel.setObjectName("yourSelectionsLabel")
+        self.verticalLayout.addWidget(self.yourSelectionsLabel)
         self.categoriesContainer = QtWidgets.QHBoxLayout()
         self.categoriesContainer.setContentsMargins(7, 7, 7, 7)
         self.categoriesContainer.setSpacing(14)
@@ -48,8 +93,10 @@ class Ui_MainWindow(object):
         self.batLabel = QtWidgets.QLabel(self.topContainer)
         self.batLabel.setObjectName("batLabel")
         self.batInfo.addWidget(self.batLabel)
-        self.batTextEdit = QtWidgets.QTextEdit(self.topContainer)
+        self.batTextEdit = QtWidgets.QLineEdit(self.topContainer)
         self.batTextEdit.setEnabled(False)
+        self.batTextEdit.setMinimumSize(QtCore.QSize(30, 0))
+        self.batTextEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.batTextEdit.setObjectName("batTextEdit")
         self.batInfo.addWidget(self.batTextEdit)
         self.categoriesContainer.addLayout(self.batInfo)
@@ -58,8 +105,10 @@ class Ui_MainWindow(object):
         self.bowLabel = QtWidgets.QLabel(self.topContainer)
         self.bowLabel.setObjectName("bowLabel")
         self.bowInfo.addWidget(self.bowLabel)
-        self.bowTextEdit = QtWidgets.QTextEdit(self.topContainer)
+        self.bowTextEdit = QtWidgets.QLineEdit(self.topContainer)
         self.bowTextEdit.setEnabled(False)
+        self.bowTextEdit.setMinimumSize(QtCore.QSize(30, 0))
+        self.bowTextEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.bowTextEdit.setObjectName("bowTextEdit")
         self.bowInfo.addWidget(self.bowTextEdit)
         self.categoriesContainer.addLayout(self.bowInfo)
@@ -68,8 +117,10 @@ class Ui_MainWindow(object):
         self.arLabel = QtWidgets.QLabel(self.topContainer)
         self.arLabel.setObjectName("arLabel")
         self.arInfo.addWidget(self.arLabel)
-        self.arTextEdit = QtWidgets.QTextEdit(self.topContainer)
+        self.arTextEdit = QtWidgets.QLineEdit(self.topContainer)
         self.arTextEdit.setEnabled(False)
+        self.arTextEdit.setMinimumSize(QtCore.QSize(30, 0))
+        self.arTextEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.arTextEdit.setObjectName("arTextEdit")
         self.arInfo.addWidget(self.arTextEdit)
         self.categoriesContainer.addLayout(self.arInfo)
@@ -78,8 +129,10 @@ class Ui_MainWindow(object):
         self.wkLabel = QtWidgets.QLabel(self.topContainer)
         self.wkLabel.setObjectName("wkLabel")
         self.wkInfo.addWidget(self.wkLabel)
-        self.wkTextEdit = QtWidgets.QTextEdit(self.topContainer)
+        self.wkTextEdit = QtWidgets.QLineEdit(self.topContainer)
         self.wkTextEdit.setEnabled(False)
+        self.wkTextEdit.setMinimumSize(QtCore.QSize(30, 0))
+        self.wkTextEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.wkTextEdit.setObjectName("wkTextEdit")
         self.wkInfo.addWidget(self.wkTextEdit)
         self.categoriesContainer.addLayout(self.wkInfo)
@@ -92,19 +145,17 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.leftPanel = QtWidgets.QWidget(self.bottomContainer)
-        self.leftPanel.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.leftPanel.setStyleSheet("")
         self.leftPanel.setObjectName("leftPanel")
         self.leftSide = QtWidgets.QVBoxLayout(self.leftPanel)
         self.leftSide.setContentsMargins(9, 9, 9, 9)
-        self.leftSide.setSpacing(9)
+        self.leftSide.setSpacing(0)
         self.leftSide.setObjectName("leftSide")
         self.ptsAvailableInfo = QtWidgets.QWidget(self.leftPanel)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.ptsAvailableInfo.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.ptsAvailableInfo.sizePolicy().hasHeightForWidth())
         self.ptsAvailableInfo.setSizePolicy(sizePolicy)
         self.ptsAvailableInfo.setMaximumSize(QtCore.QSize(16777215, 50))
         self.ptsAvailableInfo.setObjectName("ptsAvailableInfo")
@@ -113,37 +164,40 @@ class Ui_MainWindow(object):
         self.ptsAvailableLabel = QtWidgets.QLabel(self.ptsAvailableInfo)
         self.ptsAvailableLabel.setObjectName("ptsAvailableLabel")
         self.horizontalLayout_3.addWidget(self.ptsAvailableLabel)
-        self.ptsAvailableTextEdit = QtWidgets.QTextEdit(self.ptsAvailableInfo)
+        self.ptsAvailableTextEdit = QtWidgets.QLineEdit(self.ptsAvailableInfo)
         self.ptsAvailableTextEdit.setEnabled(False)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.ptsAvailableTextEdit.sizePolicy().hasHeightForWidth())
-        self.ptsAvailableTextEdit.setSizePolicy(sizePolicy)
-        self.ptsAvailableTextEdit.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.ptsAvailableTextEdit.setMinimumSize(QtCore.QSize(0, 25))
+        self.ptsAvailableTextEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.ptsAvailableTextEdit.setObjectName("ptsAvailableTextEdit")
         self.horizontalLayout_3.addWidget(self.ptsAvailableTextEdit)
-        spacerItem = QtWidgets.QSpacerItem(
-            100, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(100, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem)
         self.leftSide.addWidget(self.ptsAvailableInfo)
-        self.ctgContainer = QtWidgets.QVBoxLayout()
-        self.ctgContainer.setObjectName("ctgContainer")
-        self.ctgGroup = QtWidgets.QGroupBox(self.leftPanel)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Maximum)
+        self.ctgGroupContainer = QtWidgets.QWidget(self.leftPanel)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.ctgGroup.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.ctgGroupContainer.sizePolicy().hasHeightForWidth())
+        self.ctgGroupContainer.setSizePolicy(sizePolicy)
+        self.ctgGroupContainer.setMaximumSize(QtCore.QSize(16777215, 60))
+        self.ctgGroupContainer.setObjectName("ctgGroupContainer")
+        self.ctgContainer = QtWidgets.QVBoxLayout(self.ctgGroupContainer)
+        self.ctgContainer.setContentsMargins(0, 6, 0, 0)
+        self.ctgContainer.setObjectName("ctgContainer")
+        self.ctgGroup = QtWidgets.QGroupBox(self.ctgGroupContainer)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ctgGroup.sizePolicy().hasHeightForWidth())
         self.ctgGroup.setSizePolicy(sizePolicy)
         self.ctgGroup.setMinimumSize(QtCore.QSize(0, 50))
-        self.ctgGroup.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.ctgGroup.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.ctgGroup.setBaseSize(QtCore.QSize(0, 0))
+        self.ctgGroup.setFlat(False)
+        self.ctgGroup.setCheckable(False)
         self.ctgGroup.setObjectName("ctgGroup")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.ctgGroup)
+        self.horizontalLayout_6.setContentsMargins(-1, 9, -1, -1)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.batRadio = QtWidgets.QRadioButton(self.ctgGroup)
         self.batRadio.setObjectName("batRadio")
@@ -158,73 +212,59 @@ class Ui_MainWindow(object):
         self.wkRadio.setObjectName("wkRadio")
         self.horizontalLayout_6.addWidget(self.wkRadio)
         self.ctgContainer.addWidget(self.ctgGroup)
-        self.leftSide.addLayout(self.ctgContainer)
+        self.leftSide.addWidget(self.ctgGroupContainer)
         self.availablePlayersList = QtWidgets.QListWidget(self.leftPanel)
         self.availablePlayersList.setObjectName("availablePlayersList")
         self.leftSide.addWidget(self.availablePlayersList)
         self.horizontalLayout.addWidget(self.leftPanel)
-        spacerItem1 = QtWidgets.QSpacerItem(
-            30, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem1)
         self.rightPanel = QtWidgets.QWidget(self.bottomContainer)
-        self.rightPanel.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.rightPanel.setStyleSheet("")
         self.rightPanel.setObjectName("rightPanel")
         self.rightSIde = QtWidgets.QVBoxLayout(self.rightPanel)
         self.rightSIde.setContentsMargins(9, 9, 9, 9)
+        self.rightSIde.setSpacing(0)
         self.rightSIde.setObjectName("rightSIde")
         self.ptsUsedInfo = QtWidgets.QWidget(self.rightPanel)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.ptsUsedInfo.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.ptsUsedInfo.sizePolicy().hasHeightForWidth())
         self.ptsUsedInfo.setSizePolicy(sizePolicy)
-        self.ptsUsedInfo.setMaximumSize(QtCore.QSize(16777215, 55))
+        self.ptsUsedInfo.setMaximumSize(QtCore.QSize(16777215, 50))
         self.ptsUsedInfo.setObjectName("ptsUsedInfo")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.ptsUsedInfo)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.ptsUsedLabel = QtWidgets.QLabel(self.ptsUsedInfo)
         self.ptsUsedLabel.setObjectName("ptsUsedLabel")
         self.horizontalLayout_4.addWidget(self.ptsUsedLabel)
-        self.ptsUsedTextEdit = QtWidgets.QTextEdit(self.ptsUsedInfo)
+        self.ptsUsedTextEdit = QtWidgets.QLineEdit(self.ptsUsedInfo)
         self.ptsUsedTextEdit.setEnabled(False)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.ptsUsedTextEdit.sizePolicy().hasHeightForWidth())
-        self.ptsUsedTextEdit.setSizePolicy(sizePolicy)
-        self.ptsUsedTextEdit.setMaximumSize(QtCore.QSize(100, 16777215))
+        self.ptsUsedTextEdit.setMinimumSize(QtCore.QSize(0, 25))
+        self.ptsUsedTextEdit.setAlignment(QtCore.Qt.AlignCenter)
         self.ptsUsedTextEdit.setObjectName("ptsUsedTextEdit")
         self.horizontalLayout_4.addWidget(self.ptsUsedTextEdit)
-        spacerItem2 = QtWidgets.QSpacerItem(
-            100, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_4.addItem(spacerItem2)
+        spacerItem1 = QtWidgets.QSpacerItem(100, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem1)
         self.rightSIde.addWidget(self.ptsUsedInfo)
         self.teamInfo = QtWidgets.QVBoxLayout()
+        self.teamInfo.setSpacing(0)
         self.teamInfo.setObjectName("teamInfo")
         self.teamNameInfo = QtWidgets.QWidget(self.rightPanel)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.teamNameInfo.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.teamNameInfo.sizePolicy().hasHeightForWidth())
         self.teamNameInfo.setSizePolicy(sizePolicy)
-        self.teamNameInfo.setMinimumSize(QtCore.QSize(0, 50))
-        self.teamNameInfo.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.teamNameInfo.setMinimumSize(QtCore.QSize(0, 60))
+        self.teamNameInfo.setMaximumSize(QtCore.QSize(16777215, 66))
         self.teamNameInfo.setObjectName("teamNameInfo")
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.teamNameInfo)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.teamNameTitle = QtWidgets.QLabel(self.teamNameInfo)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            self.teamNameTitle.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(self.teamNameTitle.sizePolicy().hasHeightForWidth())
         self.teamNameTitle.setSizePolicy(sizePolicy)
         self.teamNameTitle.setMaximumSize(QtCore.QSize(80, 16777215))
         self.teamNameTitle.setObjectName("teamNameTitle")
@@ -238,17 +278,19 @@ class Ui_MainWindow(object):
         self.teamInfo.addWidget(self.chosenPlayersList)
         self.rightSIde.addLayout(self.teamInfo)
         self.horizontalLayout.addWidget(self.rightPanel)
+        self.rightPanel.raise_()
+        self.leftPanel.raise_()
         self.verticalLayout_2.addWidget(self.bottomContainer)
+        self.footerLabel = QtWidgets.QLabel(self.centralwidget)
+        self.footerLabel.setObjectName("footerLabel")
+        self.verticalLayout_2.addWidget(self.footerLabel)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 754, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 644, 21))
         self.menubar.setObjectName("menubar")
         self.menuManage_Teams = QtWidgets.QMenu(self.menubar)
         self.menuManage_Teams.setObjectName("menuManage_Teams")
         MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
         self.actionNewTeam = QtWidgets.QAction(MainWindow)
         self.actionNewTeam.setObjectName("actionNewTeam")
         self.actionOpenTeam = QtWidgets.QAction(MainWindow)
@@ -282,28 +324,36 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Fantasy Cricket"))
-        self.label.setText(_translate("MainWindow", "Your Selections"))
+        self.yourSelectionsLabel.setText(_translate("MainWindow", "Your Selections"))
         self.batLabel.setText(_translate("MainWindow", "Batsmen (BAT)"))
+        self.batTextEdit.setPlaceholderText(_translate("MainWindow", "0"))
         self.bowLabel.setText(_translate("MainWindow", "Bowlers (BOW)"))
+        self.bowTextEdit.setPlaceholderText(_translate("MainWindow", "0"))
         self.arLabel.setText(_translate("MainWindow", "All Rounders (AR)"))
+        self.arTextEdit.setPlaceholderText(_translate("MainWindow", "0"))
         self.wkLabel.setText(_translate("MainWindow", "Wicket Keeper (WK)"))
-        self.ptsAvailableLabel.setText(
-            _translate("MainWindow", "Points Available"))
+        self.wkTextEdit.setPlaceholderText(_translate("MainWindow", "0"))
+        self.ptsAvailableLabel.setText(_translate("MainWindow", "Points Available"))
+        self.ptsAvailableTextEdit.setPlaceholderText(_translate("MainWindow", "1000"))
         self.ctgGroup.setTitle(_translate("MainWindow", "Categories"))
         self.batRadio.setText(_translate("MainWindow", "BAT"))
         self.bowRadio.setText(_translate("MainWindow", "BOW"))
         self.arRadio.setText(_translate("MainWindow", "AR"))
         self.wkRadio.setText(_translate("MainWindow", "WK"))
         self.ptsUsedLabel.setText(_translate("MainWindow", "Points Used"))
+        self.ptsUsedTextEdit.setPlaceholderText(_translate("MainWindow", "0"))
         self.teamNameTitle.setText(_translate("MainWindow", "Team Name"))
         self.teamNameLabel.setText(_translate("MainWindow", "TEAM_NAME_HERE"))
-        self.menuManage_Teams.setTitle(
-            _translate("MainWindow", "Manage Teams"))
+        self.footerLabel.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:8pt; font-weight:600;\">Fantasy Cricket Team Manager</span></p></body></html>"))
+        self.menuManage_Teams.setTitle(_translate("MainWindow", "Manage Teams"))
         self.actionNewTeam.setText(_translate("MainWindow", "NEW Team"))
+        self.actionNewTeam.setShortcut(_translate("MainWindow", "Ctrl+N"))
         self.actionOpenTeam.setText(_translate("MainWindow", "OPEN Team"))
+        self.actionOpenTeam.setShortcut(_translate("MainWindow", "Ctrl+O"))
         self.actionSaveTeam.setText(_translate("MainWindow", "SAVE Team"))
-        self.actionEvaluateTeam.setText(
-            _translate("MainWindow", "EVALUATE Team"))
+        self.actionSaveTeam.setShortcut(_translate("MainWindow", "Ctrl+S"))
+        self.actionEvaluateTeam.setText(_translate("MainWindow", "EVALUATE Team"))
+        self.actionEvaluateTeam.setShortcut(_translate("MainWindow", "Ctrl+E"))
 
     def menu_handler(self, action):
         action_performed = action.text()
