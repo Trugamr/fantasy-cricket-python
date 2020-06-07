@@ -190,24 +190,26 @@ class Ui_EvaluateTeamDialog(object):
     
 
     def fetch_matches(self):
-        matches = { "match" : {} }
-        self.cricket_db_cursor.execute('SELECT player, scored, faced, fours, sixes, bowled, maiden, given, wkts, catches, stumping, ro FROM match')
-        for record in self.cricket_db_cursor.fetchall():
-            matches['match'].update({ record[0]: {
-                    "player": record[0],
-                    "scored": record[1],
-                    "faced": record[2],
-                    "fours": record[3],
-                    "sixes": record[4],
-                    "bowled": record[5],
-                    "maiden": record[6],
-                    "given": record[7],
-                    "wkts": record[8],
-                    "catches": record[9],
-                    "stumping": record[10],
-                    "ro": record[11]
+        matches = { "match" : {}, "match two": {} }
+        for match in matches.keys():
+            self.cricket_db_cursor.execute(f'SELECT player, scored, faced, fours, sixes, bowled, maiden, given, wkts, catches, stumping, ro FROM "{match}"')
+            for record in self.cricket_db_cursor.fetchall():
+                matches[match].update({ record[0]: {
+                        "player": record[0],
+                        "scored": record[1],
+                        "faced": record[2],
+                        "fours": record[3],
+                        "sixes": record[4],
+                        "bowled": record[5],
+                        "maiden": record[6],
+                        "given": record[7],
+                        "wkts": record[8],
+                        "catches": record[9],
+                        "stumping": record[10],
+                        "ro": record[11]
+                    }
                 }
-            })
+            )
         
         return matches
 
@@ -273,10 +275,11 @@ class Ui_EvaluateTeamDialog(object):
         player_points += 5 if data['scored'] >= 50 else 0 # 5 points for half century
         player_points += 10 if data['scored'] >= 100 else 0 # 10 points for  century
         strike_rate = 0
-        try:
-            strike_rate = round((data['scored']/data['faced'] * 100))
-        except Exception as error:
-            print(f'ERROR: {error}')
+        if data['faced'] != 0:
+            try:
+                strike_rate = round((data['scored']/data['faced'] * 100))
+            except Exception as error:
+                print(f'ERROR: {error}')
         player_points += 2 if strike_rate >= 80 else 0 # 2 points for strike rate 80-100
         player_points += 4 if strike_rate > 100 else 0 # 4 addition points for stirke rate > 100
         player_points += data['fours'] # 1 points for 4
@@ -287,10 +290,11 @@ class Ui_EvaluateTeamDialog(object):
         player_points += 5 if data['wkts'] >= 3 else 0 # additional 5 points for 3 wickets
         player_points += 10 if data['wkts'] >= 5 else 0 # addition 10 points for 3 wickets
         economy_rate = None
-        try:
-            economy_rate = data['given']/(data['bowled']/6) # runs given per over
-        except Exception as error:
-            print(f'ERROR: {error}')
+        if data['bowled'] != 0:
+            try:
+                economy_rate = data['given']/(data['bowled']/6) # runs given per over
+            except Exception as error:
+                print(f'ERROR: {error}')
 
         if(economy_rate):
             player_points += 4 if economy_rate >= 3.5 and economy_rate < 4.5 else 0 # 10 points if economy rate less than 2
