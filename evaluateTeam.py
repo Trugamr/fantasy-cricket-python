@@ -14,6 +14,40 @@ class Ui_EvaluateTeamDialog(object):
     def setupUi(self, EvaluateTeamDialog):
         EvaluateTeamDialog.setObjectName("EvaluateTeamDialog")
         EvaluateTeamDialog.resize(524, 485)
+        EvaluateTeamDialog.setStyleSheet("QDialog#EvaluateTeamDialog {\n"
+"    background-color: rgb(255, 246, 255);\n"
+"}\n"
+"\n"
+"QLabel#pointsByPlayerLabel, #playersLabel {\n"
+"    font: 10pt;\n"
+"    color: #3e3e3e;\n"
+"}\n"
+"\n"
+"QLabel#totalPointsLabel {\n"
+"    font: bold 11pt;\n"
+"    color: #3e3e3e;\n"
+"     background-color: rgb(254, 217, 255);\n"
+"}\n"
+"\n"
+"QWidget#comboBoxes {\n"
+"    background-color: rgb(254, 238, 255);\n"
+"}\n"
+"\n"
+"QLabel#teamLabel, #matchLabel {\n"
+"    color: #3e3e3e;\n"
+"    font: bold 9pt;\n"
+"}\n"
+"\n"
+"QLabel#evaluateHeading {\n"
+"    background-color: rgb(254, 217, 255);\n"
+"    padding: 10px;\n"
+"}\n"
+"\n"
+"QPushButton#calculateScoreButton {\n"
+"    background: #fefefe;\n"
+"    font: 10pt;\n"
+"}\n"
+"")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(EvaluateTeamDialog)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.topContainer = QtWidgets.QWidget(EvaluateTeamDialog)
@@ -24,86 +58,94 @@ class Ui_EvaluateTeamDialog(object):
         self.topContainer.setSizePolicy(sizePolicy)
         self.topContainer.setObjectName("topContainer")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.topContainer)
-        self.verticalLayout.setSpacing(10)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(self.topContainer)
+        self.evaluateHeading = QtWidgets.QLabel(self.topContainer)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy)
-        self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setObjectName("label")
-        self.verticalLayout.addWidget(self.label)
-        self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        sizePolicy.setHeightForWidth(self.evaluateHeading.sizePolicy().hasHeightForWidth())
+        self.evaluateHeading.setSizePolicy(sizePolicy)
+        self.evaluateHeading.setAlignment(QtCore.Qt.AlignCenter)
+        self.evaluateHeading.setObjectName("evaluateHeading")
+        self.verticalLayout.addWidget(self.evaluateHeading)
+        self.comboBoxes = QtWidgets.QWidget(self.topContainer)
+        self.comboBoxes.setStyleSheet("border-color: solid 10pt rgb(85, 255, 255);")
+        self.comboBoxes.setObjectName("comboBoxes")
+        self.teamMatchCombos = QtWidgets.QHBoxLayout(self.comboBoxes)
+        self.teamMatchCombos.setContentsMargins(9, 9, 9, 9)
+        self.teamMatchCombos.setObjectName("teamMatchCombos")
         self.teamContainer = QtWidgets.QFormLayout()
         self.teamContainer.setContentsMargins(0, 0, -1, 0)
         self.teamContainer.setObjectName("teamContainer")
-        self.teamLabel = QtWidgets.QLabel(self.topContainer)
+        self.teamLabel = QtWidgets.QLabel(self.comboBoxes)
         self.teamLabel.setObjectName("teamLabel")
         self.teamContainer.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.teamLabel)
-        self.teamComboBox = QtWidgets.QComboBox(self.topContainer)
+        self.teamComboBox = QtWidgets.QComboBox(self.comboBoxes)
         self.teamComboBox.setObjectName("teamComboBox")
         self.teamContainer.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.teamComboBox)
-        self.horizontalLayout_5.addLayout(self.teamContainer)
+        self.teamMatchCombos.addLayout(self.teamContainer)
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_5.addItem(spacerItem)
+        self.teamMatchCombos.addItem(spacerItem)
         self.matchContainer = QtWidgets.QFormLayout()
         self.matchContainer.setObjectName("matchContainer")
-        self.matchLabel = QtWidgets.QLabel(self.topContainer)
+        self.matchLabel = QtWidgets.QLabel(self.comboBoxes)
         self.matchLabel.setObjectName("matchLabel")
         self.matchContainer.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.matchLabel)
-        self.matchComboBox = QtWidgets.QComboBox(self.topContainer)
+        self.matchComboBox = QtWidgets.QComboBox(self.comboBoxes)
         self.matchComboBox.setObjectName("matchComboBox")
         self.matchContainer.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.matchComboBox)
-        self.horizontalLayout_5.addLayout(self.matchContainer)
-        self.verticalLayout.addLayout(self.horizontalLayout_5)
+        self.teamMatchCombos.addLayout(self.matchContainer)
+        self.verticalLayout.addWidget(self.comboBoxes)
         self.verticalLayout_2.addWidget(self.topContainer)
         self.listsContainer = QtWidgets.QHBoxLayout()
         self.listsContainer.setObjectName("listsContainer")
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.leftContainer = QtWidgets.QVBoxLayout()
+        self.leftContainer.setObjectName("leftContainer")
         self.playersLabel = QtWidgets.QLabel(EvaluateTeamDialog)
         self.playersLabel.setObjectName("playersLabel")
-        self.verticalLayout_3.addWidget(self.playersLabel)
+        self.leftContainer.addWidget(self.playersLabel)
         self.playersList = QtWidgets.QListWidget(EvaluateTeamDialog)
         self.playersList.setObjectName("playersList")
-        self.verticalLayout_3.addWidget(self.playersList)
-        self.listsContainer.addLayout(self.verticalLayout_3)
+        self.leftContainer.addWidget(self.playersList)
+        self.listsContainer.addLayout(self.leftContainer)
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         self.listsContainer.addItem(spacerItem1)
-        self.verticalLayout_4 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.rightContainer = QtWidgets.QVBoxLayout()
+        self.rightContainer.setObjectName("rightContainer")
         self.pointsByPlayerLabel = QtWidgets.QLabel(EvaluateTeamDialog)
         self.pointsByPlayerLabel.setObjectName("pointsByPlayerLabel")
-        self.verticalLayout_4.addWidget(self.pointsByPlayerLabel)
+        self.rightContainer.addWidget(self.pointsByPlayerLabel)
         self.pointsList = QtWidgets.QListWidget(EvaluateTeamDialog)
         self.pointsList.setObjectName("pointsList")
-        self.verticalLayout_4.addWidget(self.pointsList)
-        self.listsContainer.addLayout(self.verticalLayout_4)
+        self.rightContainer.addWidget(self.pointsList)
+        self.listsContainer.addLayout(self.rightContainer)
         self.verticalLayout_2.addLayout(self.listsContainer)
-        self.comboBoxesContainer = QtWidgets.QWidget(EvaluateTeamDialog)
+        self.footerContainer = QtWidgets.QWidget(EvaluateTeamDialog)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.comboBoxesContainer.sizePolicy().hasHeightForWidth())
-        self.comboBoxesContainer.setSizePolicy(sizePolicy)
-        self.comboBoxesContainer.setObjectName("comboBoxesContainer")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.comboBoxesContainer)
+        sizePolicy.setHeightForWidth(self.footerContainer.sizePolicy().hasHeightForWidth())
+        self.footerContainer.setSizePolicy(sizePolicy)
+        self.footerContainer.setMinimumSize(QtCore.QSize(0, 35))
+        self.footerContainer.setMaximumSize(QtCore.QSize(16777215, 60))
+        self.footerContainer.setObjectName("footerContainer")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.footerContainer)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setSpacing(0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.calcaulateScoreButton = QtWidgets.QPushButton(self.comboBoxesContainer)
-        self.calcaulateScoreButton.setObjectName("calcaulateScoreButton")
-        self.horizontalLayout_3.addWidget(self.calcaulateScoreButton)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.calculateScoreButton = QtWidgets.QPushButton(self.footerContainer)
+        self.calculateScoreButton.setMinimumSize(QtCore.QSize(0, 35))
+        self.calculateScoreButton.setObjectName("calculateScoreButton")
+        self.horizontalLayout_3.addWidget(self.calculateScoreButton)
+        spacerItem2 = QtWidgets.QSpacerItem(46, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
-        self.totalPointsLabel = QtWidgets.QLabel(self.comboBoxesContainer)
+        self.totalPointsLabel = QtWidgets.QLabel(self.footerContainer)
         self.totalPointsLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.totalPointsLabel.setObjectName("totalPointsLabel")
         self.horizontalLayout_3.addWidget(self.totalPointsLabel)
-        self.verticalLayout_2.addWidget(self.comboBoxesContainer)
+        self.verticalLayout_2.addWidget(self.footerContainer)
 
         self.retranslateUi(EvaluateTeamDialog)
         QtCore.QMetaObject.connectSlotsByName(EvaluateTeamDialog)
@@ -120,17 +162,17 @@ class Ui_EvaluateTeamDialog(object):
         self.team_combo_handler(0)
 
         # adding calculate button handler
-        self.calcaulateScoreButton.clicked.connect(self.calculate_points)
+        self.calculateScoreButton.clicked.connect(self.calculate_points)
 
     def retranslateUi(self, EvaluateTeamDialog):
         _translate = QtCore.QCoreApplication.translate
         EvaluateTeamDialog.setWindowTitle(_translate("EvaluateTeamDialog", "Evaluate Team"))
-        self.label.setText(_translate("EvaluateTeamDialog", "Evaluate Your Fantasy Cricket Team"))
+        self.evaluateHeading.setText(_translate("EvaluateTeamDialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:14pt; font-weight:600; color:#313131;\">Evaluate Your Fantasy Cricket Team</span></p></body></html>"))
         self.teamLabel.setText(_translate("EvaluateTeamDialog", "Team: "))
         self.matchLabel.setText(_translate("EvaluateTeamDialog", "Match: "))
         self.playersLabel.setText(_translate("EvaluateTeamDialog", "Players"))
         self.pointsByPlayerLabel.setText(_translate("EvaluateTeamDialog", "Points by Player"))
-        self.calcaulateScoreButton.setText(_translate("EvaluateTeamDialog", "Calculate Score"))
+        self.calculateScoreButton.setText(_translate("EvaluateTeamDialog", "Calculate Score"))
         self.totalPointsLabel.setText(_translate("EvaluateTeamDialog", "Total Points: 0"))
     
     def team_combo_handler(self, index):
@@ -295,8 +337,6 @@ class Ui_EvaluateTeamDialog(object):
 
 if __name__ == "__main__":
     import sys
-
-    # ui initialization
     app = QtWidgets.QApplication(sys.argv)
     EvaluateTeamDialog = QtWidgets.QDialog()
     ui = Ui_EvaluateTeamDialog()

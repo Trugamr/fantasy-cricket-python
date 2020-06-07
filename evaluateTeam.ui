@@ -13,6 +13,42 @@
   <property name="windowTitle">
    <string>Evaluate Team</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog#EvaluateTeamDialog {
+	background-color: rgb(255, 246, 255);
+}
+
+QLabel#pointsByPlayerLabel, #playersLabel {
+	font: 10pt;
+	color: #3e3e3e;
+}
+
+QLabel#totalPointsLabel {
+	font: bold 11pt;
+	color: #3e3e3e;
+ 	background-color: rgb(254, 217, 255);
+}
+
+QWidget#comboBoxes {
+	background-color: rgb(254, 238, 255);
+}
+
+QLabel#teamLabel, #matchLabel {
+	color: #3e3e3e;
+	font: bold 9pt;
+}
+
+QLabel#evaluateHeading {
+	background-color: rgb(254, 217, 255);
+	padding: 10px;
+}
+
+QPushButton#calculateScoreButton {
+	background: #fefefe;
+	font: 10pt;
+}
+</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QWidget" name="topContainer" native="true">
@@ -24,10 +60,22 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
-       <number>10</number>
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="evaluateHeading">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
           <horstretch>0</horstretch>
@@ -35,7 +83,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Evaluate Your Fantasy Cricket Team</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#313131;&quot;&gt;Evaluate Your Fantasy Cricket Team&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -46,61 +94,78 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <item>
-         <layout class="QFormLayout" name="teamContainer">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="teamLabel">
-            <property name="text">
-             <string>Team: </string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="teamComboBox"/>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <spacer name="hSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <layout class="QFormLayout" name="matchContainer">
-          <item row="0" column="0">
-           <widget class="QLabel" name="matchLabel">
-            <property name="text">
-             <string>Match: </string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="matchComboBox"/>
-          </item>
-         </layout>
-        </item>
-       </layout>
+       <widget class="QWidget" name="comboBoxes" native="true">
+        <property name="styleSheet">
+         <string notr="true">border-color: solid 10pt rgb(85, 255, 255);</string>
+        </property>
+        <layout class="QHBoxLayout" name="teamMatchCombos">
+         <property name="leftMargin">
+          <number>9</number>
+         </property>
+         <property name="topMargin">
+          <number>9</number>
+         </property>
+         <property name="rightMargin">
+          <number>9</number>
+         </property>
+         <property name="bottomMargin">
+          <number>9</number>
+         </property>
+         <item>
+          <layout class="QFormLayout" name="teamContainer">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="teamLabel">
+             <property name="text">
+              <string>Team: </string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="teamComboBox"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="hSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QFormLayout" name="matchContainer">
+           <item row="0" column="0">
+            <widget class="QLabel" name="matchLabel">
+             <property name="text">
+              <string>Match: </string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="matchComboBox"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -108,7 +173,7 @@
    <item>
     <layout class="QHBoxLayout" name="listsContainer">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="leftContainer">
        <item>
         <widget class="QLabel" name="playersLabel">
          <property name="text">
@@ -138,7 +203,7 @@
       </spacer>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
+      <layout class="QVBoxLayout" name="rightContainer">
        <item>
         <widget class="QLabel" name="pointsByPlayerLabel">
          <property name="text">
@@ -154,12 +219,24 @@
     </layout>
    </item>
    <item>
-    <widget class="QWidget" name="comboBoxesContainer" native="true">
+    <widget class="QWidget" name="footerContainer" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>35</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>60</height>
+      </size>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="spacing">
@@ -178,7 +255,13 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QPushButton" name="calcaulateScoreButton">
+       <widget class="QPushButton" name="calculateScoreButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
         <property name="text">
          <string>Calculate Score</string>
         </property>
@@ -194,7 +277,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>40</width>
+          <width>46</width>
           <height>20</height>
          </size>
         </property>
