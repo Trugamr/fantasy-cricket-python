@@ -308,6 +308,9 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        # setting window icon
+        MainWindow.setWindowIcon(QtGui.QIcon('icon.png'))
+
         # connect handle functions
         self.menuManage_Teams.triggered[QtWidgets.QAction].connect(self.menu_handler)
         for rb in [self.batRadio, self.bowRadio, self.arRadio, self.wkRadio]:
@@ -548,6 +551,9 @@ class Ui_MainWindow(object):
         except:
             print('ERROR: couldn\'t fetch team names')
         
+        if name == 'NO_TEAM_SELECTED':
+            return (False, 'Team name invalid')
+
         return (True, 'Team Name is valid')
     
 
@@ -576,6 +582,10 @@ class Ui_MainWindow(object):
     def save_team(self):
         team_players = self.batsmen + self.bowlers + self.all_rounders + self.wicket_keeper
         
+        # if team name is NO_TEAM_SELECTED this means user didn't create team yet
+        if self.team_name == 'NO_TEAM_SELECTED':
+            raise ValueError('No team selected, create or open a team')
+
         try:
             self.validate_logic()
         except ValueError as error:
@@ -684,6 +694,7 @@ class Ui_MainWindow(object):
         msg.setText(heading)
         msg.setInformativeText(desc + '\t\t\t')
         msg.setWindowTitle('Fantasy Cricket')
+        msg.setWindowIcon(QtGui.QIcon('icon.png'))
         msg.exec_()       
 
 
